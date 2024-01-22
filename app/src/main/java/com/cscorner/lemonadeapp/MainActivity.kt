@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -61,11 +62,22 @@ class MainActivity : ComponentActivity() {
         squeezeCount = if (currentStep == 1) (2..4).random() else 0
         when(currentStep){
 
-            1 -> { LemonTree(info = stringResource(R.string.lemonTree),onStepChange = { newStep -> currentStep = newStep })
+            1 -> { LemonTree(info = stringResource(R.string.lemonTree)) { newStep ->
+                currentStep = newStep
             }
-            2-> {Lemon(info = stringResource(R.string.squeezeLemon),onStepChange = { newStep -> currentStep = newStep })}
-            3 ->{ LemonDrink(info = stringResource(R.string.LemonDrink),onStepChange = { newStep -> currentStep = newStep })}
-            4 ->{LemonRestart(info = stringResource(R.string.LemonRestart),onStepChange = { newStep -> currentStep = newStep })}
+            }
+            2-> {Lemon(info = stringResource(R.string.squeezeLemon)) { newStep ->
+                currentStep = newStep
+            }
+            }
+            3 ->{ LemonDrink(info = stringResource(R.string.LemonDrink)) { newStep ->
+                currentStep = newStep
+            }
+            }
+            4 ->{LemonRestart(info = stringResource(R.string.LemonRestart)) { newStep ->
+                currentStep = newStep
+            }
+            }
         }
 
 
@@ -76,7 +88,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun LemonTree(info: String, onStepChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+    fun LemonTree(info: String, onStepChange: (Int) -> Unit) {
         val image = painterResource(id = R.drawable.lemon_tree)
         Column(verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -112,10 +124,10 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun Lemon(info: String, onStepChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+    fun Lemon(info: String, onStepChange: (Int) -> Unit) {
         val image = painterResource(id = R.drawable.lemon_squeeze)
-        var tapCount by remember { mutableStateOf(0) }
-        var squeezeCount by remember { mutableStateOf(0) }
+        var tapCount by remember { mutableIntStateOf(0) }
+        var squeezeCount by remember { mutableIntStateOf(0) }
 
         Column(verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -159,7 +171,7 @@ class MainActivity : ComponentActivity() {
 // ... (Remaining code remains unchanged)
 
     @Composable
-    fun LemonDrink(info : String,onStepChange: (Int) -> Unit, modifier: Modifier=Modifier) {
+    fun LemonDrink(info: String, onStepChange: (Int) -> Unit) {
         val image = painterResource(id = R.drawable.lemon_drink,)
         Column(verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -192,7 +204,7 @@ class MainActivity : ComponentActivity() {
 
     }
     @Composable
-    fun LemonRestart(info : String,onStepChange: (Int) -> Unit,modifier:Modifier=Modifier){
+    fun LemonRestart(info: String, onStepChange: (Int) -> Unit){
         val image = painterResource(id = R.drawable.lemon_restart)
 
         Column(horizontalAlignment = Alignment.CenterHorizontally,
